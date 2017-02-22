@@ -1,0 +1,80 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import sys
+import os
+import getpass
+import re
+
+def get_tenants(username):
+	config_file="/etc/dynamictorque/accounts.conf"
+	with open(config_file) as f:
+		content = f.readlines()
+	tenants=[]
+	for line in content:
+		if username in line:
+			tenants.append(line.split(" ")[0])
+	return tenants
+
+def main(argv=None):
+	account_string=None
+#	print "#PBS -l mem=16MB"
+	node_count=0
+	ppn_count=1
+	memory=0
+	for line in sys.stdin:
+		sys.stdout.write(line)
+		if re.match("^ *#PBS  *-A  *", line):
+			account_string=line[line.find(" -A ")+4:].strip()
+		if re.match("^ *#PBS  *-l  *", line):
+			m=re.search(" *nodes=(0*[1-9][0-9]?)", line)
+			if m:
+				node_count=int(m.groups()[0])
+				# exclude dev user
+                                username=pwd.getpwuid( os.getuid() )[ 0 ]
+                                #sys.stderr.write("GOT USERNAME [%s]\n" % username)
+				if node_count>1 and username!='sreilly' and username!='shundezh':
+					sys.stderr.write("Sorry, multi-node jobs are currently not supported.\n")
+					return -1
+			m=re.search("ppn=(0*[1-9][0-9]?)", line)
+			if m:
+				ppn_count=int(m.groups()[0])
+			m=re.search("ncpus=(0*[1-9][0-9]?)", line)
+			if m:
+				node_count=1
+				ppn_count=int(m.groups()[0])
+			m=re.search(" *mem=(0*[1-9][0-9]*)([a-zA-Z][a-zA-Z])", line)
+			if m:
+				memory=int(m.groups()[0])
+				mtag=m.groups()[1]
+				if mtag.lower() == "gb":
+					memory=memory*1024*1024
+				elif mtag.lower() == "mb":
+					memory=memory*1024
+				elif mtag.lower() == "kb":
+					memory=memory
+				else:
+					sys.stderr.write("Memory should be either in Kilo Bytes(kb, KB) or Mega Bytes (mb, MB) or Giga Bytes (gb, GB). Please fix the script.\n")
+					return -1
+#			else:
+#				sys.stderr.write("Memory tag should not be more than two letters. It can be just one of kb,KB,mb,MB,gb and GB. Please fix the script.\n")
+#				return -1
+#	print("%i %i %i %i"% (node_count, ppn_count, memory, memory/node_count*ppn_count))
+	if node_count>0 and memory>0 and memory/(node_count*ppn_count)>4000000.:
+		sys.stderr.write("You have asked for too much memory. In Emu 4GB memory is allocated for each core. (But in theroy usable memory is a bit less because some are used by the system, etc.) Please fix the script.\n")
+		return -1
+	for i in range(len(argv)):
+		if argv[i]=="-A":
+			account_string=argv[i+1]
+			break
+	if account_string is not None:
+		tenants=get_tenants(getpass.getuser())
+		if account_string not in tenants:
+			sys.stderr.write("You are not allowed to submit your jobs to %s\n" % account_string)
+			sys.stderr.write("Your valid account strings are %s\n" % tenants)
+			return -1
+	return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv[1:]))

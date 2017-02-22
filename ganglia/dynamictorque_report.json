@@ -1,0 +1,19 @@
+{
+   "report_name" : "dynamictorque_report",
+   "title" : "Dynamic Torque Report",
+   "vertical_label" : "number of cores",
+   "series" : [
+      { "metric": "active_static_cores", "color": "ffea00", "label": "Static",
+        "line_width": "2", "type": "stack" },
+      { "metric": "active_dynamic_cores", "color": "7FE817", "label": "Dynamic",
+        "line_width": "2", "type": "stack" },
+      { "metric": "starting_cores", "color": "F75D59", "label": "Starting",
+        "line_width": "2", "type": "stack" },
+      { "metric": "deleting_cores", "color": "614051", "label": "Deleting",
+        "line_width": "4", "type": "stack" },
+      { "metric": "total_pbs_cores", "color": "dd00ee", "label": "PBS",
+        "line_width": "2", "type": "line" },
+      { "metric": "running_cores", "color": "dd0000", "label": "Running",
+        "line_width": "4", "type": "line" }
+   ]
+}

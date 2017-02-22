@@ -1,0 +1,1 @@
+*/1 * * * * /opt/dynamictorque/ganglia/dynamictorque_metric.sh > /dev/null 2>&1

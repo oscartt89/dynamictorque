@@ -1,0 +1,13 @@
+{
+   "report_name" : "torque_report",
+   "title" : "Torque Report",
+   "vertical_label" : "number",
+   "series" : [
+      { "metric": "idle_jobs_num", "color": "614051", "label": "Number of idle jobs",
+        "line_width": "4", "type": "line" },
+      { "metric": "total_pbs_cores", "color": "dd00ee", "label": "Total PBS cores",
+        "line_width": "2", "type": "line" },
+      { "metric": "running_cores", "color": "dd0000", "label": "Running cores",
+        "line_width": "4", "type": "line" }
+   ]
+}

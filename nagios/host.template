@@ -1,0 +1,10 @@
+#Start IP_ADDRESS
+define host {
+        alias                          IP_ADDRESS
+        use                            linux-server
+        address                        IP_ADDRESS
+        max_check_attempts             6
+        host_name                      IP_ADDRESS
+        contact_groups                 admins
+}
+#End IP_ADDRESS

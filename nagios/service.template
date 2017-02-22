@@ -1,0 +1,50 @@
+#Start IP_ADDRESS
+define service {
+        use                            passive-service
+        service_description            check_load_IP_ADDRESS
+        host_name                      IP_ADDRESS
+}
+
+define service {
+        use                            passive-service
+        service_description            check_cvmfs_atlas_IP_ADDRESS
+        host_name                      IP_ADDRESS
+}
+
+define service {
+        use                            passive-service
+        service_description            check_pbs_mom_IP_ADDRESS
+        host_name                      IP_ADDRESS
+}
+
+define service {
+        use                            passive-service
+        service_description            check_cvmfs_coepp_IP_ADDRESS
+        host_name                      IP_ADDRESS
+}
+
+define service {
+        use                            passive-service
+        service_description            check_mount_points_IP_ADDRESS
+        host_name                      IP_ADDRESS
+}
+
+define service {
+        use                            generic-service
+        service_description            check_ssh_IP_ADDRESS
+        host_name                      IP_ADDRESS
+        check_command                  check_ssh
+}
+
+define service {
+        use                            passive-service
+        service_description            check_disk_IP_ADDRESS
+        host_name                      IP_ADDRESS
+}
+
+define service {
+        use                            passive-service
+        service_description            check_cvmfs_belle_IP_ADDRESS
+        host_name                      IP_ADDRESS
+}
+#End IP_ADDRESS

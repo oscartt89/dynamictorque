@@ -1,0 +1,8 @@
+/var/log/dynamictorque/dynamictorque.log {
+        size 50M
+        create 644 root root
+        rotate 5
+        missingok
+        notifempty
+        compress
+}
